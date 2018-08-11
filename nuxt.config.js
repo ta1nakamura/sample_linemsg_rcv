@@ -3,6 +3,7 @@ const pkg = require('./package')
 const nodeExternals = require('webpack-node-externals')
 //add for API
 const bodyParser = require('body-parser')
+const session = require('express-session')
 //setBaseURL for Axios
 var env = process.env.NODE_ENV || 'development';
 if (env === 'development' || env === 'test') {
@@ -19,6 +20,15 @@ module.exports = {
     */
   serverMiddleware:[
     bodyParser.json(),
+    session({
+      secret: 'sakaela',
+      resave: false,
+      saveUninitialized: false,
+      cookie            : {
+        // maxAge : 1000 * 60 * 60 * 24 * 30, // 30日
+        maxAge : 1000 * 60 * 60, // 60min
+      }
+    }),
     '~/api'
   ],
 

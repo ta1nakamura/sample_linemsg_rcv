@@ -4,9 +4,11 @@ const { ObjectID } = require("mongodb");
 
 const { path,app } = require("./../apptest");
 const { Todo } = require("./../models/todo");
-const { todos, populateTodos} = require("./seed/seed");
+const {LineUser} = require("../models/lineuser")
+const { todos, populateTodos,lineusers,populateLineusers} = require("./seed/seed");
 
 beforeEach(populateTodos);
+beforeEach(populateLineusers);
 
 describe('Get Test /test/:id', () => {
     it('should work [it]', (done) => {
@@ -87,3 +89,30 @@ describe('PATCH /todos/:id', () => {
         expect(typeof res.body.todo.completedAt).toBe('number');    
     });
 });
+
+//=======Lineuser DummyLogin ====//
+describe('GET /dummylogin/:lineuserid',()=>{
+    it('[async] should create a new lineuser', async () => {
+        let new_lineuserid = 'new001'
+        let res = await request(app)
+            .get(path + `/dummylogin/${new_lineuserid}`)
+            .expect(200)
+        expect(res.body.lineuser.lineuserid).toBe(new_lineuserid);
+        
+        let db_lineusers = await LineUser.find({ lineuserid: new_lineuserid })
+        expect(db_lineusers.length).toBe(1);
+        expect(db_lineusers[0].lineuserid).toBe(new_lineuserid);
+    });
+    it('[async] should update a same lineuser', async () => {
+        // let new_lineuserid = 'new001'
+        let res = await request(app)
+            .get(path + `/dummylogin/${lineusers[0].lineuserid}`)
+            .expect(200)
+        expect(res.body.lineuser.lineuserid).toBe(lineusers[0].lineuserid);
+        
+        let db_lineusers = await LineUser.find({ lineuserid: lineusers[0].lineuserid })
+        expect(db_lineusers.length).toBe(1);
+        expect(db_lineusers[0].lineuserid).toBe(lineusers[0].lineuserid);
+    });
+
+})

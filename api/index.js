@@ -4,9 +4,10 @@ const express = require("express");
 require('./config/config.js') //config for mongodb,
 const _ = require("lodash")
 const { ObjectID } = require("mongodb")
-var { mongoose } = require('./db/mongoose');
-var { Todo } = require("./models/todo");
-
+const { mongoose } = require('./db/mongoose');
+const { Todo } = require("./models/todo");
+const {LineUser} = require("./models/lineuser")
+const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 
@@ -117,6 +118,43 @@ router.patch('/todos/:id', (req, res) => {
   }).catch((e) => {
       res.status(400).send();
   })
+})
+
+/**
+ * Lineuser: dummylogin/:name
+ *   - save db to lineuser
+ *   - set session 
+ */
+router.get('/dummylogin/:lineuserid',async(req,res)=>{
+    console.log('--dummylogin')
+    let token= jwt.sign({
+        sub  : req.params.lineuserid,
+        name : req.params.lineuserid,
+       },'secret').toString();
+    var userinfo={
+        lineuserid  : req.params.lineuserid,
+        displayname : req.params.lineuserid,
+        id_token    : token,
+    }
+    try{
+        doc = await LineUser.findOneAndUpdate(
+            {   lineuserid : userinfo.lineuserid },
+            {
+                displayname: userinfo.displayname ,
+                picture    : null,
+                isfollow   :true,
+                lastupdate : new Date().getTime(),
+            },
+            {upsert:true,new:true}
+        );
+        userinfo._id = doc._id;
+        req.session.lineuser = userinfo
+        // res.redirect('/dashboard');
+        res.status(200).send({ lineuser:userinfo });
+    }catch(e){
+        console.log('[save-error]',e)
+        res.status(400).json(e);
+    }
 })
 
 module.exports = {
