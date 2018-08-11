@@ -28,9 +28,9 @@ describe('GET /todos', () => {
     it('[async] should get all todos', async () => {
         let res= await request(app)
             .get(path + '/todos')
-            // .set('x-auth', users[0].tokens[0].token)
+            .set('x-auth', lineusers[0].token)
             .expect(200)
-            expect(res.body.todos.length).toBe(2);
+            expect(res.body.todos.length).toBe(1);
     })
 });
 
@@ -40,6 +40,7 @@ describe('POST /todos', () => {
         var text = '[async] Test todo text';
         let res = await request(app)
             .post(path + '/todos')
+            .set('x-auth', lineusers[0].token)
             .send({ text })
             .expect(200)
         expect(res.body.text).toBe(text);
@@ -53,8 +54,9 @@ describe('POST /todos', () => {
 describe('GET /todos/:id', () => {
     it('[async] should return todo doc',async ()=>{
         let res = await request(app)
-            .get(path + `/todos/${todos[0]._id.toHexString()}`).expect(200);
-            // .set('x-auth', users[0].tokens[0].token)
+            .get(path + `/todos/${todos[0]._id.toHexString()}`)
+            .set('x-auth', lineusers[0].token)
+            .expect(200)
         expect(res.body.todo.text).toBe(todos[0].text);
     });
 });
@@ -64,7 +66,7 @@ describe('DELETE /todos/:id', () => {
         var hexId = todos[1]._id.toHexString();
         let res = await request(app)
             .delete(path + `/todos/${hexId}`)
-            // .set('x-auth', users[1].tokens[0].token)
+            .set('x-auth', lineusers[1].token)
             .expect(200)
         expect(res.body.todo._id).toBe(hexId);
             
@@ -80,7 +82,7 @@ describe('PATCH /todos/:id', () => {
         var text = 'This should be the new text';
         let res = await request(app)
             .patch(path + `/todos/${hexId}`)
-            // .set('x-auth', users[0].tokens[0].token)
+            .set('x-auth', lineusers[0].token)
             .send({ completed: true, text })
             .expect(200)
             

@@ -3,7 +3,7 @@ const { ObjectID } = require("mongodb")
 const { mongoose } = require("../db/mongoose");
 const {LineUser} = require("../models/lineuser")
 const jwt = require("jsonwebtoken");
-const JWT_SECRET='secret';
+// const JWT_SECRET='secret';
 
 const userOneId = new ObjectID();
 const userTwoId = new ObjectID();
@@ -13,12 +13,14 @@ const lineusers = [{
         displayname:'Dummy-001',
         isfollow:true,
         lastupdate: new Date().getTime(),
+        token: jwt.sign({ sub: 'dummy0001', name: 'Dummy-001'}, process.env.JWT_SECRET).toString()
     },{
         _id:userTwoId,
         lineuserid :'dummy0002',
         displayname:'Dummy-002',
         isfollow:true,
         lastupdate: new Date().getTime(),
+        token: jwt.sign({ sub: 'dummy0002', name: 'Dummy-002'}, process.env.JWT_SECRET).toString()
     }
 ];
 
@@ -50,13 +52,15 @@ const updateLineuser = async()=>{
 }
 const testJWT =async()=>{
  console.log('--testJWT--')
- let token= jwt.sign({
-     sub  : lineusers[0].lineuserid,
-     name : lineusers[0].displayname
-    },JWT_SECRET).toString();
-console.log('---- token:\n',token);
+//  let token= jwt.sign({
+//      sub  : lineusers[0].lineuserid,
+//      name : lineusers[0].displayname
+//     },JWT_SECRET).toString();
+// console.log('---- token:\n',token);
 //decode
-let decoded = jwt.verify(token,JWT_SECRET)
+// let decoded = jwt.verify(token,JWT_SECRET)
+let decoded = jwt.verify(lineusers[0].token,process.env.JWT_SECRET)
+
 console.log('--- decoded:\n',decoded);
 
 }

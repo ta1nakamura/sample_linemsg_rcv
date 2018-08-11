@@ -8,7 +8,7 @@ const { mongoose } = require('./db/mongoose');
 const { Todo } = require("./models/todo");
 const {LineUser} = require("./models/lineuser")
 const jwt = require("jsonwebtoken");
-
+var { authenticate } = require("./middleware/authenticate")
 const router = express.Router();
 
 const app = express()
@@ -32,11 +32,11 @@ router.get("/test/:id", (req, res) => {
 /**
  * Test Express and MongoDb,Mongoose
  */
-router.post('/todos', async(req, res) => {
+router.post('/todos', authenticate, async(req, res) => {
   // console.log(req.body)
   var todo = new Todo({
       text: req.body.text,
-      // _creator: req.user._id
+      _creator: req.user._id
   });
   try{
     const doc = await todo.save();
@@ -45,16 +45,16 @@ router.post('/todos', async(req, res) => {
     res.status(400).send(e);
   }
 });
-router.get('/todos', (req, res) => {
+router.get('/todos',authenticate, (req, res) => {
   Todo.find({
-      // _creator: req.user._id
+      _creator: req.user._id
   }).then((todos) => {
       res.send({ todos });
   }, (e) => {
       res.status(400).send(e);
   })
 });
-router.get('/todos/:id', (req, res) => {
+router.get('/todos/:id',authenticate, (req, res) => {
   var id = req.params.id;
   if (!ObjectID.isValid(id)) {
       return res.status(400).send();
@@ -62,7 +62,7 @@ router.get('/todos/:id', (req, res) => {
 
   Todo.findOne({
       _id: id,
-      // _creator: req.user._id
+      _creator: req.user._id
   }).then((todo) => {
       if (!todo) {
           return res.status(404).send();
@@ -72,7 +72,7 @@ router.get('/todos/:id', (req, res) => {
       return res.status(400).send();
   })
 });
-router.delete('/todos/:id', async(req, res) => {
+router.delete('/todos/:id',authenticate, async(req, res) => {
   const id = req.params.id;
   if (!ObjectID.isValid(id)) {
       return res.status(404).send();
@@ -80,7 +80,7 @@ router.delete('/todos/:id', async(req, res) => {
   try {
       const todo = await Todo.findOneAndRemove({
           _id: id,
-          // _creator: req.user._id
+          _creator: req.user._id
       })
       if (!todo) {
           return res.status(404).send();
@@ -91,7 +91,7 @@ router.delete('/todos/:id', async(req, res) => {
       res.status(400).send();
   }
 })
-router.patch('/todos/:id', (req, res) => {
+router.patch('/todos/:id',authenticate, (req, res) => {
   var id = req.params.id;
   var body = _.pick(req.body, ['text', 'completed']);
   if (!ObjectID.isValid(id)) {
@@ -107,7 +107,7 @@ router.patch('/todos/:id', (req, res) => {
   // Todo.findByIdAndUpdate(id, { $set: body }, { new: true }).then((todo) => {
   Todo.findOneAndUpdate({
       _id: id,
-      // _creator: req.user.id
+      _creator: req.user.id
   }, {
       $set: body
   }, { new: true }).then((todo) => {
@@ -130,7 +130,7 @@ router.post('/dummylogin/',async(req,res)=>{
     let token= jwt.sign({
         sub  : req.body.lineuserid,
         name : req.body.lineuserid,
-       },'secret').toString();
+       },process.env.JWT_SECRET).toString();
     var userinfo={
         lineuserid  : req.body.lineuserid,
         displayname : req.body.lineuserid,
@@ -150,7 +150,8 @@ router.post('/dummylogin/',async(req,res)=>{
         userinfo._id = doc._id;
         req.session.lineuser = userinfo
         
-        res.status(200).send({ lineuser:userinfo });
+        res.status(200).header('x-auth', token)
+            .send({ lineuser:userinfo });
         // res.redirect('/other');
     }catch(e){
         console.log('[save-error]',e)
