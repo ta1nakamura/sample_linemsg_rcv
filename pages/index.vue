@@ -12,9 +12,18 @@
     - Axios module
     - Mongdb,Mongoose
     - Heroku
+    - 
+    - dummyLogin (test for LINELOGIN)
   </pre>
-  <v-btn @click="onClickTest">/api/todos</v-btn>
+  <v-text-field label="input dummy lineuserid" v-model="dummyid"></v-text-field>
+  {{dummyid}}
+  <v-btn @click="onDummyLogin()">/api/onDummyLogin</v-btn>
   <p>{{items}}</p>
+  <hr>
+  <h2>this.$store.getters.currentUser</h2>
+  {{currentUser}}
+  <hr>
+  
 
   </v-container>
 </v-content>
@@ -29,6 +38,7 @@
 export default {
   data() {
     return {
+      dummyid:'test',
       items:null
     };
   },
@@ -46,6 +56,11 @@ export default {
   created(){
     console.log('--crated')
   },
+  computed:{
+    currentUser(){
+      return this.$store.getters.currentUser;
+    },
+  },
   methods:{
     async onClickTest(context){
       console.log('--onClickTest');
@@ -56,8 +71,25 @@ export default {
       }catch(e){
         console.log(e);
       }
+    },
+    async onDummyLogin(context){
+      console.log('--onDummyLogin');
+      if(!this.dummyid) {
+        console.log('no dumyid')
+        return
+      }
+      try{
+        
+        let data = await this.$axios.$post('/api/dummylogin',{
+          lineuserid : this.dummyid
+        });
+        console.log(data);
+        this.$store.commit('setLineuser', data.lineuser);
+      }catch(e){
+        console.log(e);
+      }
     }
-  }
+  }//end methods
 };
 </script>
 

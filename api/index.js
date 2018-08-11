@@ -126,7 +126,7 @@ router.patch('/todos/:id', (req, res) => {
  *   - set session 
  */
 router.post('/dummylogin/',async(req,res)=>{
-    console.log('--dummylogin')
+    console.log('--[api]dummylogin')
     let token= jwt.sign({
         sub  : req.body.lineuserid,
         name : req.body.lineuserid,
@@ -149,8 +149,9 @@ router.post('/dummylogin/',async(req,res)=>{
         );
         userinfo._id = doc._id;
         req.session.lineuser = userinfo
-        // res.redirect('/dashboard');
+        
         res.status(200).send({ lineuser:userinfo });
+        // res.redirect('/other');
     }catch(e){
         console.log('[save-error]',e)
         res.status(400).json(e);

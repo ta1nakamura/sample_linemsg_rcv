@@ -28,9 +28,9 @@
               </v-list-tile-avatar>
               <v-list-tile-content>
                 <v-list-tile-title class="title">
-                  <!-- <span v-if="currentUser">{{currentUser.displayname}}</span>
-                  <span v-else>No Sigin</span> -->
-                  <span>No Sigin</span>
+                  <span v-if="currentUser">{{currentUser.displayname}}</span>
+                  <span v-else>No Sigin</span>
+                  <!-- <span>No Sigin</span> -->
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -68,6 +68,17 @@
           
         ],
       }
-    }
+    },
+    computed:{
+    currentUser(){
+      return this.$store.getters.currentUser;
+      // if(this.$store.getters.isAuthenticated){
+      //   return this.$store.getters.currentUser;
+      // }
+      // else{
+      //   return null;
+      // } 
+    },
+  },
   }
 </script>
