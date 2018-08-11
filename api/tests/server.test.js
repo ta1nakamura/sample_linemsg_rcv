@@ -95,7 +95,9 @@ describe('GET /dummylogin/:lineuserid',()=>{
     it('[async] should create a new lineuser', async () => {
         let new_lineuserid = 'new001'
         let res = await request(app)
-            .get(path + `/dummylogin/${new_lineuserid}`)
+            // .get(path + `/dummylogin/${new_lineuserid}`)
+            .post(path + `/dummylogin/`)
+            .send({ lineuserid : new_lineuserid})
             .expect(200)
         expect(res.body.lineuser.lineuserid).toBe(new_lineuserid);
         
@@ -106,7 +108,9 @@ describe('GET /dummylogin/:lineuserid',()=>{
     it('[async] should update a same lineuser', async () => {
         // let new_lineuserid = 'new001'
         let res = await request(app)
-            .get(path + `/dummylogin/${lineusers[0].lineuserid}`)
+            // .get(path + `/dummylogin/${lineusers[0].lineuserid}`)
+            .post(path + `/dummylogin/`)
+            .send({ lineuserid : lineusers[0].lineuserid })
             .expect(200)
         expect(res.body.lineuser.lineuserid).toBe(lineusers[0].lineuserid);
         

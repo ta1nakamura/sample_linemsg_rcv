@@ -125,15 +125,15 @@ router.patch('/todos/:id', (req, res) => {
  *   - save db to lineuser
  *   - set session 
  */
-router.get('/dummylogin/:lineuserid',async(req,res)=>{
+router.post('/dummylogin/',async(req,res)=>{
     console.log('--dummylogin')
     let token= jwt.sign({
-        sub  : req.params.lineuserid,
-        name : req.params.lineuserid,
+        sub  : req.body.lineuserid,
+        name : req.body.lineuserid,
        },'secret').toString();
     var userinfo={
-        lineuserid  : req.params.lineuserid,
-        displayname : req.params.lineuserid,
+        lineuserid  : req.body.lineuserid,
+        displayname : req.body.lineuserid,
         id_token    : token,
     }
     try{
