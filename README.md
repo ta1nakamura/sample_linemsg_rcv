@@ -1,7 +1,8 @@
-# sample_dummy_user [fork from template_nuxt_herok]
+# About this project
+ - ダミーユーザーを作成してログインするためのテストプロジェクト
+ - LINELOGINを使ったシステムを想定している
 
 # Project Structure
-
 ## Model
   - lineuser : dummy for LINELOGIN user
   - todo     : {_creatotr : _id of lineuser }
