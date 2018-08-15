@@ -6,7 +6,7 @@
   <v-container fluid>
   <h1> Nuxt App template </h1>
   <pre>
-    - Nuxt
+    - Nuxt 1.4
     - Vuetify module
     - Expless
     - Axios module
@@ -18,7 +18,7 @@
   </pre>
   <v-text-field label="input dummy lineuserid" v-model="dummyid"></v-text-field>
   <v-btn @click="onDummyLogin()">Login</v-btn>
-  <p>{{items}}</p>
+  <!-- <p>{{items}}</p> -->
   <hr>
   <h2>this.$store.getters.currentUser</h2>
   {{currentUser}}
@@ -51,7 +51,6 @@ export default {
       console.log(e);
       context.error(e)
     }
-    // return context.app.$axios.$get('/api/todos')
   },
   created(){
     console.log('--crated')
