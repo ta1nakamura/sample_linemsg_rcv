@@ -14,10 +14,10 @@
     - Heroku
     - 
     - dummyLogin (test for LINELOGIN)
+    - TodoList
   </pre>
   <v-text-field label="input dummy lineuserid" v-model="dummyid"></v-text-field>
-  {{dummyid}}
-  <v-btn @click="onDummyLogin()">/api/onDummyLogin</v-btn>
+  <v-btn @click="onDummyLogin()">Login</v-btn>
   <p>{{items}}</p>
   <hr>
   <h2>this.$store.getters.currentUser</h2>
@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       dummyid:'test',
-      items:null
+      // items:null
     };
   },
   async asyncData(context){

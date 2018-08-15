@@ -45,14 +45,15 @@ router.post('/todos', authenticate, async(req, res) => {
     res.status(400).send(e);
   }
 });
-router.get('/todos',authenticate, (req, res) => {
-  Todo.find({
-      _creator: req.user._id
-  }).then((todos) => {
-      res.send({ todos });
-  }, (e) => {
-      res.status(400).send(e);
-  })
+router.get('/todos',authenticate, async (req, res) => {
+  try{
+    const todos = await Todo.find({
+        _creator: req.user._id
+    })
+    res.send({ todos });
+  }catch(e){
+    res.status(400).send(e);
+  }
 });
 router.get('/todos/:id',authenticate, (req, res) => {
   var id = req.params.id;

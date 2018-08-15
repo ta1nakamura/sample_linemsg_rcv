@@ -1,10 +1,10 @@
 <template>
   <v-app dark>  
     <!-- [toolbar] -->
-    <v-toolbar dark color="primary">
+    <v-toolbar dark>
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <!-- *manu -->
-      <v-toolbar-title class="white--text">nuxt app template</v-toolbar-title>
+      <v-toolbar-title class="white--text">dummyUser</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
           <v-btn flat v-for="item in items" :key="item.title" :to="item.url">
@@ -63,8 +63,9 @@
         drawer: null,
         items: [
           { title: 'HOME'      , icon: 'home'         , url: '/' },
-          { title: 'somelist'  , icon: 'assignment', url: '/dummy' },
-          { title: 'setting'   , icon: 'build'       , url: '/dummy' },
+          { title: 'todolist'  , icon: 'assignment'   , url: '/dashboard' },
+          { title: 'somelist'  , icon: 'assignment'   , url: '/' },
+          { title: 'setting'   , icon: 'build'        , url: '/' },
           
         ],
       }
