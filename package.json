@@ -1,7 +1,7 @@
 {
-  "name": "mytmp_nuxt_heroku",
+  "name": "sample_linemsg_rcv",
   "version": "1.0.0",
-  "description": "my template for nuxt, vuetify, express, mongodb, mongoose",
+  "description": "sample for LINEBOT message recieve with nuxt, vuetify, express, mongodb, mongoose",
   "author": "testuser",
   "private": true,
   "scripts": {
