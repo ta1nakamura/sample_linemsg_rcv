@@ -1,4 +1,6 @@
 # About this project
+ - LINELOGIN 機能
+ - LINEBotの送受信メッセージを保存、表示
  - ダミーユーザーを作成してログインするためのテストプロジェクト
  - LINELOGINを使ったシステムを想定している
 

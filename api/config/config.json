@@ -1,10 +1,10 @@
 {
     "test":{
-        "MONGODB_URI":"mongodb://localhost:27017/SampleDummyUserTest",
+        "MONGODB_URI":"mongodb://localhost:27017/SampleLineMsgTest",
         "JWT_SECRET":"poijasdf098"
     },
     "development":{
-        "MONGODB_URI":"mongodb://localhost:27017/SampleDummyUser",
+        "MONGODB_URI":"mongodb://localhost:27017/SampleLineMsg",
         "JWT_SECRET":"poijasdf098"
     }
 }

@@ -52,34 +52,39 @@
     </v-navigation-drawer> 
 
       <!-- ***[contents]*** -->
-      <nuxt />
+      <v-content :class="{'pa-0': $vuetify.breakpoint.smAndDown, }">
+        <v-container fluid fill-height :class="{'pa-0': $vuetify.breakpoint.smAndDown }" >
+          <v-layout justify-center align-center>
+            <nuxt/>
+          </v-layout>
+        </v-container>
+      </v-content>
   </v-app>
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        drawer: null,
-        items: [
-          { title: 'HOME'      , icon: 'home'         , url: '/' },
-          { title: 'todolist'  , icon: 'assignment'   , url: '/dashboard' },
-          { title: 'somelist'  , icon: 'assignment'   , url: '/' },
-          { title: 'setting'   , icon: 'build'        , url: '/' },
-          
-        ],
-      }
-    },
-    computed:{
-    currentUser(){
+export default {
+  data() {
+    return {
+      drawer: null,
+      items: [
+        { title: "HOME", icon: "home", url: "/" },
+        { title: "todolist", icon: "assignment", url: "/dashboard" },
+        { title: "somelist", icon: "assignment", url: "/" },
+        { title: "setting", icon: "build", url: "/" }
+      ]
+    };
+  },
+  computed: {
+    currentUser() {
       return this.$store.getters.currentUser;
       // if(this.$store.getters.isAuthenticated){
       //   return this.$store.getters.currentUser;
       // }
       // else{
       //   return null;
-      // } 
-    },
-  },
+      // }
+    }
   }
+};
 </script>

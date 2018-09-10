@@ -29,8 +29,8 @@ var LineUser = mongoose.model('LineUser', {
         default: false
     },
     lastupdate: {
-        type: Number,
-        default: null
+        type   : Date, 
+        default: Date.now
     },
 });
 
