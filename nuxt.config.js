@@ -1,3 +1,4 @@
+require("dotenv").config(); //add for LINELOGIN
 const pkg = require('./package')
 
 const nodeExternals = require('webpack-node-externals')

@@ -16,7 +16,7 @@ var authenticate = (req, res, next) => {
         // decoded = jwt.decode(
         decoded = jwt.verify(
             token,
-            process.env.JWT_SECRET
+            process.env.LINE_LOGIN_CHANNEL_SECRET
         );
         console.log('--[auth] decode.sub',decoded.sub)
         //== check mongodb

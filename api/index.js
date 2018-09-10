@@ -131,7 +131,7 @@ router.post('/dummylogin/',async(req,res)=>{
     let token= jwt.sign({
         sub  : req.body.lineuserid,
         name : req.body.lineuserid,
-       },process.env.JWT_SECRET).toString();
+       },process.env.LINE_LOGIN_CHANNEL_SECRET).toString();
     var userinfo={
         lineuserid  : req.body.lineuserid,
         displayname : req.body.lineuserid,
