@@ -4,7 +4,7 @@
     <v-toolbar dark>
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <!-- *manu -->
-      <v-toolbar-title class="white--text">dummyUser</v-toolbar-title>
+      <v-toolbar-title class="white--text">Sample LINE</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
           <v-btn flat v-for="item in items" :key="item.title" :to="item.url">
@@ -70,8 +70,9 @@ export default {
       items: [
         { title: "HOME", icon: "home", url: "/" },
         { title: "todolist", icon: "assignment", url: "/dashboard" },
-        { title: "somelist", icon: "assignment", url: "/" },
-        { title: "setting", icon: "build", url: "/" }
+        { title: "sendline", icon: "chat_bubble", url: "/sendline" },
+        { title: "setting", icon: "build", url: "/" },
+        { title: "logout", icon: "logout", url: "/logout" }
       ]
     };
   },

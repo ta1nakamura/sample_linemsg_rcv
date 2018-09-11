@@ -1,39 +1,40 @@
 <template>
-<div>
-
+<v-layout fill-height>
 <!-- [main] -->
-<v-content>
-  <v-container fluid>
-  <h1> Nuxt App template </h1>
-  <pre>
-    - Nuxt 1.4
-    - Vuetify module
-    - Expless
-    - Axios module
-    - Mongdb,Mongoose
-    - Heroku
-    - 
-    - dummyLogin (test for LINELOGIN)
-    - TodoList
-  </pre>
-  <v-text-field label="input dummy lineuserid" v-model="dummyid"></v-text-field>
-  <v-btn @click="onDummyLogin()">Login</v-btn>
-  <!-- <p>{{items}}</p> -->
-  <hr>
-  <h2>this.$store.getters.currentUser</h2>
-  {{currentUser}}
-  <hr>
-  
+<v-flex xs11 text-xs-left>
+  <v-card>
+    <h1> sample_linemsg_rcv </h1>
+    <pre>
+      - Nuxt 1.4
+      - Vuetify module
+      - Expless
+      - Axios module
+      - Mongdb,Mongoose
+      - Heroku
+      - 
+      - dummyLogin (test for LINELOGIN)
+      - TodoList
+    </pre>
+  </v-card>
 
-  </v-container>
-</v-content>
-<!-- [footer] -->
-<v-footer  app inset>
-      <span class="white--text">&copy; 2018 footer</span>
-</v-footer>
+  <v-card>
+    <v-card-text>
+      <h2>Login Test</h2>
+      <v-text-field label="input dummy lineuserid" v-model="dummyid"></v-text-field>
+      <v-btn @click="onDummyLogin()">Dummy-Login</v-btn>
+      <v-btn @click="location('/api/auth')" color="green">LINE-Login</v-btn>
+      <v-divider></v-divider>
+      <h2>this.$store.getters.currentUser</h2>
+      {{currentUser}}
+      <hr>
+    </v-card-text>
+    
+  </v-card>
+</v-flex>
 
-</div>
+</v-layout>
 </template>
+
 <script>
 export default {
   data() {
@@ -61,15 +62,10 @@ export default {
     },
   },
   methods:{
-    async onClickTest(context){
-      console.log('--onClickTest');
-      try{
-        let data = await this.$axios.$get('/api/todos');
-        console.log(data);
-        this.items = data.todos
-      }catch(e){
-        console.log(e);
-      }
+    //Goto Outside
+    location(url){
+        console.log('--methods.locathon',url)
+        location.href=url;
     },
     async onDummyLogin(context){
       console.log('--onDummyLogin');
@@ -78,7 +74,6 @@ export default {
         return
       }
       try{
-        
         let data = await this.$axios.$post('/api/dummylogin',{
           lineuserid : this.dummyid
         });

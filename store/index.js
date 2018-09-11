@@ -5,7 +5,9 @@ const SIGIN_TIMEOUT = 600
 const createStore = ()=>{
     return new Vuex.Store({
         state: {
-            lineuser: null, // ?, line object for access user
+            drawerflg: false, // left side menu
+            lineuser: null,   // ?, line object for access user
+            lineusers:[],     //for admin page from mongoDB
             todos: [],
         },
         mutations:{
@@ -14,6 +16,10 @@ const createStore = ()=>{
                 state.lineuser = user
                 // state.idToken = user.id_token
             },
+            clearAuthData(state){
+                state.lineuser = null;
+                // state.idToken = null;
+            }
         },
         actions:{
             nuxtServerInit(vuexContext,context){
@@ -25,6 +31,15 @@ const createStore = ()=>{
                 else{
                     console.log('---[$sotre.nextServerInit] no lineuser')
                 }
+            },
+            async logout(vuexContext) { //Delte Session Data
+                try{
+                    const res = await this.$axios.post('/api/logout')
+                    vuexContext.state.todos = []; //clear todos
+                    vuexContext.commit('clearAuthData')
+                    this.$router.push('/dashboard')
+                }
+                catch(err){console.log(err)}  
             },
             async addTodo(vuexContext,newTask){
                 const config = { headers: { 'x-auth':vuexContext.state.lineuser.id_token } }
@@ -65,6 +80,59 @@ const createStore = ()=>{
                     console.log(err);
                 }
             },
+            //[pushMessage to Lineid]
+            async pushMessageToSelf(vuexContext,sendline){
+                console.log('--[store.pushMessageSelf]',sendline)
+                const config = { headers: { 'x-auth':vuexContext.state.lineuser.id_token } }
+                try{
+                    const res = await this.$axios.post('/api/line_push_self',{
+                        "lineuserid":sendline.lineuserid,
+                        "message":sendline.message
+                    },
+                    config)
+                }catch(err){
+                    console.log(err);
+                }
+            },
+            //[pushMessage to Lineid]
+            async pushMessage(vuexContext,sendline){
+                console.log('--[store.pushMessage]',sendline)
+                const config = { headers: { 'x-auth':vuexContext.state.lineuser.id_token } }
+                try{
+                    const res = await this.$axios.post('/api/line_push',{
+                        "lineuserid":sendline.lineuserid,
+                        "message":sendline.message
+                    },
+                    config)
+                }catch(err){
+                    console.log(err);
+                }
+            },
+            //[pushMessage to dbuserid]
+            async pushMessageToDbuserid(vuexContext,{userid,message}){
+                console.log('--[store.pushMessageToDbuserid]',userid)
+                console.log('--[store.pushMessageToDbuserid]',message)
+                const config = { headers: { 'x-auth':vuexContext.state.lineuser.id_token } }
+                try{
+                    const res = await this.$axios.post('/api/line_push_dbuserid',{
+                        "dbuserid": userid,
+                        "message" : message
+                    },
+                    config)
+                }catch(err){
+                    console.log(err);
+                }
+            },
+            //[GET lineusers]
+            async fetchLineusers(vuexContext){
+                const config = { headers: { 'x-auth':vuexContext.state.lineuser.id_token } }
+                try{
+                    const res = await this.$axios.$get('/api/lineusers',config)
+                    vuexContext.state.lineusers = res.lineusers
+                }catch(err){
+                    console.log(err)
+                }
+            },
         },
         getters:{
             todos(state) {
@@ -75,6 +143,9 @@ const createStore = ()=>{
             },
             isAuthenticated(state){
                 return state.lineuser !=null
+            },
+            lineusers(state){
+                return state.lineusers;
             },
         }
     });
