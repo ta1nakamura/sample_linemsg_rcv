@@ -1,14 +1,48 @@
 # About this project
+ - ** LINE MESSAGEの受信 **
  - LINELOGIN 機能
  - LINEBotの送受信メッセージを保存、表示
  - ダミーユーザーを作成してログインするためのテストプロジェクト
- - LINELOGINを使ったシステムを想定している
+ - (LINELOGINを使ったシステムを想定している)
+
+# LINE Message受信対応
+参考
+ - [[Qiita]1時間でLINE BOTを作るハンズオン]([https://qiita.com/n0bisuke/items/ceaa09ef8898bee8369d)
+
+ nuxt.config.js 
+
+ ```js :nuxt.config.js 
+  serverMiddleware:[
+    // bodyParser.json(), //delete
+    session({
+      secret: 'sakaela',
+      resave: false,
+      saveUninitialized: false,
+      cookie            : {
+        // maxAge : 1000 * 60 * 60 * 24 * 30, // 30日
+        maxAge : 1000 * 60 * 60, // 60min
+      }
+    }),
+    '~/api/webhook', // for Recieve line message ,no bodyparser
+    '~/api',         // for Other API , use body parser
+  ],
+ ```
+ - api/index.js で bodyParserを設定 , webhoookではbodyParserを使わない
+ ```js :api/index.js
+ /** EXPRESS*/
+const router = express.Router();
+const app = express()
+router.use(bodyParser.json());  //move from nuxt.js
+ ```
+- api/webhook.js 新規、メッセージを受け取る
 
 # Project Structure
 ## Model
   - lineuser : dummy for LINELOGIN user
   - todo     : {_creatotr : _id of lineuser }
 ## API
+[LineMessage webhook]
+- Post : /webhook
 [ lineuser ]
  - Post: /dummylogin
  [ todo ]

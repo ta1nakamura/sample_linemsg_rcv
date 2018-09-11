@@ -20,7 +20,7 @@ module.exports = {
     * add for API
     */
   serverMiddleware:[
-    bodyParser.json(),
+    // bodyParser.json(), //delete
     session({
       secret: 'sakaela',
       resave: false,
@@ -30,7 +30,8 @@ module.exports = {
         maxAge : 1000 * 60 * 60, // 60min
       }
     }),
-    '~/api'
+    '~/api/webhook', // for Recieve line message ,no bodyparser
+    '~/api',         // for Other API , use body parser
   ],
 
   /*

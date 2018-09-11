@@ -1,5 +1,6 @@
 const express = require("express");
 const url = require('url')
+const bodyParser = require("body-parser"); // move from nuxt
 /** MongoDB and Models */
 require('./config/config.js') //config for mongodb,
 const _ = require("lodash")
@@ -24,6 +25,7 @@ const line_client = new line_message.Client(config)
 /** EXPRESS*/
 const router = express.Router();
 const app = express()
+router.use(bodyParser.json());  //move from nuxt.js
 router.use((req, res, next) => {
   Object.setPrototypeOf(req, app.request)
   Object.setPrototypeOf(res, app.response)
@@ -134,7 +136,6 @@ router.get('/lineusers',authenticate_admin, async (req,res)=>{
         res.status(400).send(e);
     }
 });
-
 // POST /api/line_push_self : for user self
 router.post("/line_push_self",authenticate, async(req,res)=>{
     debugger
@@ -162,7 +163,6 @@ router.post("/line_push_self",authenticate, async(req,res)=>{
         return res.status(e.statusCode).json({message:'Bad request'});
     }
 })
-
 // POST /api/line_push : only for admin
 router.post("/line_push",authenticate_admin, async(req,res)=>{
     debugger
@@ -210,6 +210,8 @@ router.post("/line_push_dbuserid",authenticate_admin, async(req,res)=>{
         return res.status(e.statusCode).json({message:'Bad request'});
     }
 })
+
+
 
 //=====================================================
 // [TODO]  Test Express and MongoDb,Mongoose

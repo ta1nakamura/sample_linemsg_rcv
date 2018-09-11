@@ -1,5 +1,7 @@
+require("dotenv").config();
 const {path,handler} = require('./index')
-const bodyParser = require("body-parser");
+const {path_webhook,handler_webhook} = require('./webhook')
+// const bodyParser = require("body-parser");
 const express = require("express");
 const session = require("express-session");
 const session_options = {
@@ -19,7 +21,7 @@ const app = express()
 var corsOptions = {exposedHeaders: 'x-auth'}
 app.use(cors(corsOptions));
 app.use(session(session_options));　// add for LINELOGIN
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 app.use(path,handler);
 port="3000"
 app.listen(port,()=>{
