@@ -6,9 +6,12 @@
  - (LINELOGINを使ったシステムを想定している)
 
 # LINE Message受信対応
-参考
+## 参考
  - [[Qiita]1時間でLINE BOTを作るハンズオン]([https://qiita.com/n0bisuke/items/ceaa09ef8898bee8369d)
-
+　MessageFormat
+ - LINEMessage Format
+  - https://developers.line.me/ja/reference/messaging-api/#message-objects
+## Nuxt 変更
  nuxt.config.js 
 
  ```js :nuxt.config.js 
@@ -35,6 +38,12 @@ const app = express()
 router.use(bodyParser.json());  //move from nuxt.js
  ```
 - api/webhook.js 新規、メッセージを受け取る
+
+## dev tool
+> ngrok http 3000
+
+## Store DB
+ - Model lineMessages
 
 # Project Structure
 ## Model

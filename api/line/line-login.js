@@ -99,7 +99,7 @@ class LineLogin {
                     let decoded_id_token;
                     // const id_token_raw = token_response.id_token
                     try {
-                        debugger //add debugger
+                        // debugger //add debugger
                         //Store raw(origin) id_token
                         token_response.id_token_raw = token_response.id_token
 

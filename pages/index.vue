@@ -5,15 +5,21 @@
   <v-card>
     <h1> sample_linemsg_rcv </h1>
     <pre>
-      - Nuxt 1.4
-      - Vuetify module
-      - Expless
-      - Axios module
+      [Component]
+      - Nuxt 1.4, axios, vuetify,
       - Mongdb,Mongoose
+      - Expless
+      [Server]
       - Heroku
-      - 
+      [Function]
       - dummyLogin (test for LINELOGIN)
+      - LINELOGIN
       - TodoList
+      - LINE Send/recieveM essage
+      [LINE SITE]
+      - <a href="https://developers.line.me/console/">Line Developper Console</a> 
+      - <a href="https://developers.line.me/ja/docs/messaging-api/"> LINE Message API</a>
+      <a href="https://developers.line.me/ja/reference/messaging-api/#message-objects"> LINE Message Format</a>
     </pre>
   </v-card>
 
@@ -46,8 +52,8 @@ export default {
   async asyncData(context){
     console.log('--asyncData');
     try{
-      let data = await context.app.$axios.$get('/api/test/3');
-      console.log(data);
+      // let data = await context.app.$axios.$get('/api/test/3');
+      // console.log(data);
     }catch(e){
       console.log(e);
       context.error(e)

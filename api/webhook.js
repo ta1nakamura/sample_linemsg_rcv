@@ -6,7 +6,8 @@ const _ = require("lodash")
 const { ObjectID } = require("mongodb")
 const { mongoose } = require('./db/mongoose');
 // const { Todo } = require("./models/todo");
-// const {LineUser} = require("./models/lineuser")
+const {LineUser} = require("./models/lineuser")
+const {LineMessage} = require("./models/linemessage")
 /** User Auth */
 const jwt = require("jsonwebtoken");
 var { authenticate } = require("./middleware/authenticate")
@@ -33,14 +34,38 @@ router.use((req, res, next) => {
   next()
 })
 //POST /api/webhook --Recieve Message
-router.post('/', line_message.middleware(config),(req, res) => {
+router.post('/', line_message.middleware(config),async (req, res) => {
 
   console.log(req.body.events);
-
+  //--SaveMesssage
+  try{
+    await saveMessage( req.body.events);
+  }catch(e){
+    console.log(e)
+    return
+    // res.status(400).send(e);
+  }
   Promise
     .all(req.body.events.map(handleEvent))
     .then((result) => res.json(result));
 });
+
+async function saveMessage(messageobj){
+  let message= new LineMessage({
+    from_user_id     : null,   //linuser 参照
+    from_lineuserid  : messageobj[0].source.userId, 
+    from_displayname : null,   // lineuser参照
+    
+    to_user_id       : null,   // queueを参照してShopidを入れる
+    to_lineuserid    : 'none', // todo del
+    to_displayname   : null,   // shomename
+    
+    type : messageobj[0].type,
+    text : messageobj[0].type =='message'? messageobj[0].message.text : null,
+    messageobj : messageobj[0]
+  })
+    const doc = await message.save()
+}
 
 function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
@@ -52,6 +77,22 @@ function handleEvent(event) {
     text: event.message.text //実際に返信の言葉を入れる箇所
   });
 }
+//======= Message Example ==========================
+// "events": [
+//   {
+//     "replyToken": "0f3779fba3b349968c5d07db31eab56f",
+//     "type": "message",
+//     "timestamp": 1462629479859,
+//     "source": {
+//       "type": "user",
+//       "userId": "U4af4980629..."
+//     },
+//     "message": {
+//       "id": "325708",
+//       "type": "text",
+//       "text": "Hello, world"
+//     }
+//   },
 
 module.exports = {
   path: '/api/webhook',
