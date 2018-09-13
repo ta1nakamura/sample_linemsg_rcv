@@ -6,6 +6,13 @@
  - (LINELOGINを使ったシステムを想定している)
 
 # LINE Message受信対応
+## dev tool
+> ngrok http 3000
+
+Developper Console
+
+ - https://developers.line.me/console/
+
 ## 参考
  - [[Qiita]1時間でLINE BOTを作るハンズオン]([https://qiita.com/n0bisuke/items/ceaa09ef8898bee8369d)
 　MessageFormat
@@ -39,8 +46,6 @@ router.use(bodyParser.json());  //move from nuxt.js
  ```
 - api/webhook.js 新規、メッセージを受け取る
 
-## dev tool
-> ngrok http 3000
 
 ## Store DB
  - Model lineMessages

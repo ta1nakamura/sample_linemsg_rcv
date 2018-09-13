@@ -1,6 +1,6 @@
 require("dotenv").config();
-const {path,handler} = require('./index')
-const {path_webhook,handler_webhook} = require('./webhook')
+// const {path,handler} = require('./index')
+const {path,handler} = require('./webhook')
 // const bodyParser = require("body-parser");
 const express = require("express");
 const session = require("express-session");

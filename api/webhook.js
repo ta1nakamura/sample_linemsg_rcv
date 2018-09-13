@@ -3,17 +3,13 @@ const url = require('url')
 /** MongoDB and Models */
 require('./config/config.js') //config for mongodb,
 const _ = require("lodash")
-const { ObjectID } = require("mongodb")
 const { mongoose } = require('./db/mongoose');
-// const { Todo } = require("./models/todo");
+//--Models
 const {LineUser} = require("./models/lineuser")
 const {LineMessage} = require("./models/linemessage")
-/** User Auth */
-const jwt = require("jsonwebtoken");
-var { authenticate } = require("./middleware/authenticate")
-const { authenticate_admin } = require("./middleware/authenticate_admin")
+const {Queue} = require("./models/queue")
+
 /**LINELOGIN, LINE MESSAGE */
-// const line_login = require("./line/line-login"); //custom
 const line_message = require('@line/bot-sdk');
 const config = {
       channelAccessToken: process.env.LINE_MESSAGE_CHANNEL_ACCESS_TOKEN,
@@ -51,20 +47,26 @@ router.post('/', line_message.middleware(config),async (req, res) => {
 });
 
 async function saveMessage(messageobj){
+  //lineuser
+  const lineuserid = messageobj[0].source.userId
+  const lineuser = await LineUser.findOne({lineuserid}).sort({lastupdate:-1});
+  //queue
+  const queue = await Queue.findOne({_userid : lineuser.id}).sort({createdAt:-1}) 
   let message= new LineMessage({
-    from_user_id     : null,   //linuser 参照
+    from_userid      : lineuser ? lineuser._id : null ,          // linuser._id
     from_lineuserid  : messageobj[0].source.userId, 
-    from_displayname : null,   // lineuser参照
+    from_displayname : lineuser ? lineuser.displayname:null, // lineuser.displayname
     
-    to_user_id       : null,   // queueを参照してShopidを入れる
-    to_lineuserid    : 'none', // todo del
-    to_displayname   : null,   // shomename
+    to_queue_id   : queue ? queue._id      : null ,      // queue._id
+    to_shop_id    : queue ? queue._shopid  : null ,  // queue._shop_id
+    to_shopname   : queue ? queue.shopname : null , // queue.shomename
     
     type : messageobj[0].type,
     text : messageobj[0].type =='message'? messageobj[0].message.text : null,
     messageobj : messageobj[0]
   })
     const doc = await message.save()
+    console.log('save msg',doc)
 }
 
 function handleEvent(event) {
