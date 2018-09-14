@@ -52,8 +52,9 @@ router.use(bodyParser.json());  //move from nuxt.js
 
 # Project Structure
 ## Model
-  - lineuser : dummy for LINELOGIN user
-  - todo     : {_creatotr : _id of lineuser }
+  - linemessage : 
+  - lineuser    : dummy for LINELOGIN user
+  - todo        : {_creatotr : _id of lineuser }
 ## API
 [LineMessage webhook]
 - Post : /webhook
